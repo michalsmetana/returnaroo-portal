@@ -5,13 +5,18 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 
 interface OrderItem {
   id: string;
   name: string;
   price: number;
   quantity: number;
+}
+
+interface SelectedItem {
+  id: string;
+  reason: string;
 }
 
 const TEST_ORDER = {
@@ -24,11 +29,18 @@ const TEST_ORDER = {
   ],
 };
 
+const RETURN_REASONS = [
+  "Wrong item sent",
+  "Wrong color",
+  "Item doesn't fit",
+  "Item arrived damaged",
+];
+
 const Index = () => {
   const [step, setStep] = useState(1);
   const [orderNumber, setOrderNumber] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
   const { toast } = useToast();
 
   const validateOrderDetails = () => {
@@ -44,10 +56,21 @@ const Index = () => {
   };
 
   const handleItemSelect = (itemId: string) => {
+    setSelectedItems(prev => {
+      const isSelected = prev.some(item => item.id === itemId);
+      if (isSelected) {
+        return prev.filter(item => item.id !== itemId);
+      } else {
+        return [...prev, { id: itemId, reason: RETURN_REASONS[0] }];
+      }
+    });
+  };
+
+  const handleReasonChange = (itemId: string, reason: string) => {
     setSelectedItems(prev =>
-      prev.includes(itemId)
-        ? prev.filter(id => id !== itemId)
-        : [...prev, itemId]
+      prev.map(item =>
+        item.id === itemId ? { ...item, reason } : item
+      )
     );
   };
 
@@ -60,6 +83,17 @@ const Index = () => {
       });
       return;
     }
+
+    const hasInvalidReasons = selectedItems.some(item => !item.reason);
+    if (hasInvalidReasons) {
+      toast({
+        title: "Error",
+        description: "Please select a return reason for all items",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setStep(3);
     toast({
       title: "Return Initiated",
@@ -109,31 +143,56 @@ const Index = () => {
       case 2:
         return (
           <div className="space-y-4">
-            <p className="text-sm text-gray-600 mb-4">Select items to return:</p>
+            <p className="text-sm text-gray-600 mb-4">Select items to return and provide a reason:</p>
             <div className="space-y-3">
-              {TEST_ORDER.items.map((item) => (
-                <div
-                  key={item.id}
-                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                    selectedItems.includes(item.id)
-                      ? "border-[#ea384c] bg-red-50"
-                      : "border-gray-200 hover:border-[#ea384c]"
-                  }`}
-                  onClick={() => handleItemSelect(item.id)}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">{item.name}</p>
-                      <p className="text-sm text-gray-500">
-                        Quantity: {item.quantity} | ${item.price}
-                      </p>
+              {TEST_ORDER.items.map((item) => {
+                const selectedItem = selectedItems.find(si => si.id === item.id);
+                return (
+                  <div
+                    key={item.id}
+                    className={`p-4 border rounded-lg transition-all ${
+                      selectedItem
+                        ? "border-[#ea384c] bg-red-50"
+                        : "border-gray-200 hover:border-[#ea384c]"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div>
+                        <p className="font-medium">{item.name}</p>
+                        <p className="text-sm text-gray-500">
+                          Quantity: {item.quantity} | ${item.price}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleItemSelect(item.id)}
+                        className={`p-2 rounded-full transition-colors ${
+                          selectedItem
+                            ? "bg-[#ea384c] text-white"
+                            : "bg-gray-200 text-gray-600 hover:bg-[#ea384c] hover:text-white"
+                        }`}
+                      >
+                        <Check className="h-4 w-4" />
+                      </button>
                     </div>
-                    {selectedItems.includes(item.id) && (
-                      <Check className="text-[#ea384c] h-5 w-5" />
+                    {selectedItem && (
+                      <div className="mt-3">
+                        <select
+                          value={selectedItem.reason}
+                          onChange={(e) => handleReasonChange(item.id, e.target.value)}
+                          className="w-full p-2 border rounded bg-white text-sm focus:border-[#ea384c] focus:ring-[#ea384c]"
+                        >
+                          {RETURN_REASONS.map((reason) => (
+                            <option key={reason} value={reason}>
+                              {reason}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <Button
               onClick={handleSubmitReturn}
