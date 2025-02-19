@@ -28,7 +28,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-white p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ const Index = () => {
         className="w-full max-w-md space-y-8 text-center"
       >
         <div className="space-y-2">
-          <h1 className="text-4xl font-semibold tracking-tight">
+          <h1 className="text-4xl font-semibold tracking-tight text-[#ea384c]">
             Easy Returns
           </h1>
           <p className="text-gray-500">
@@ -44,7 +44,7 @@ const Index = () => {
           </p>
         </div>
 
-        <Card className="p-6">
+        <Card className="p-6 border-[#ea384c] border">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <label
@@ -59,12 +59,12 @@ const Index = () => {
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
                 placeholder="Enter your order number"
-                className="w-full transition-all duration-200 ease-in-out"
+                className="w-full transition-all duration-200 ease-in-out focus:border-[#ea384c] focus:ring-[#ea384c]"
               />
             </div>
             <Button
               type="submit"
-              className="w-full bg-black hover:bg-gray-800 text-white transition-all duration-200"
+              className="w-full bg-[#ea384c] hover:bg-[#ea384c]/90 text-white transition-all duration-200"
             >
               Start Return
             </Button>
