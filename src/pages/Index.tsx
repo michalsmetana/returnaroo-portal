@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -150,11 +149,12 @@ const Index = () => {
                 return (
                   <div
                     key={item.id}
-                    className={`p-4 border rounded-lg transition-all ${
+                    className={`p-4 border rounded-lg transition-all cursor-pointer ${
                       selectedItem
                         ? "border-[#ea384c] bg-red-50"
                         : "border-gray-200 hover:border-[#ea384c]"
                     }`}
+                    onClick={() => handleItemSelect(item.id)}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div>
@@ -163,20 +163,18 @@ const Index = () => {
                           Quantity: {item.quantity} | ${item.price}
                         </p>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => handleItemSelect(item.id)}
+                      <div
                         className={`p-2 rounded-full transition-colors ${
                           selectedItem
                             ? "bg-[#ea384c] text-white"
-                            : "bg-gray-200 text-gray-600 hover:bg-[#ea384c] hover:text-white"
+                            : "bg-gray-200 text-gray-600"
                         }`}
                       >
                         <Check className="h-4 w-4" />
-                      </button>
+                      </div>
                     </div>
                     {selectedItem && (
-                      <div className="mt-3">
+                      <div className="mt-3" onClick={(e) => e.stopPropagation()}>
                         <select
                           value={selectedItem.reason}
                           onChange={(e) => handleReasonChange(item.id, e.target.value)}
