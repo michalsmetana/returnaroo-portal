@@ -243,6 +243,33 @@ const Index = () => {
             </div>
             <h3 className="text-xl font-semibold">Return Submitted Successfully!</h3>
             
+            {/* Selected Items Preview */}
+            <div className="mt-6 space-y-4">
+              <h4 className="text-sm font-medium text-gray-700">Items to Return:</h4>
+              <div className="grid grid-cols-1 gap-4">
+                {TEST_ORDER.items
+                  .filter(item => selectedItems.some(si => si.id === item.id))
+                  .map(item => {
+                    const selectedItem = selectedItems.find(si => si.id === item.id);
+                    return (
+                      <div key={item.id} className="flex items-center p-4 bg-gray-50 rounded-lg">
+                        <div className="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="ml-4 flex-grow text-left">
+                          <p className="font-medium text-sm">{item.name}</p>
+                          <p className="text-xs text-gray-500">Return Reason: {selectedItem?.reason}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+            
             {/* Shipping Label Preview */}
             <div className="mt-6 border-2 border-gray-200 rounded-lg p-6 bg-white shadow-sm">
               <div className="space-y-4">
