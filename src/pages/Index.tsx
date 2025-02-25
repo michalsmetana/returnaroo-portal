@@ -1,10 +1,11 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
-import { Check, ChevronDown } from "lucide-react";
+import { Check } from "lucide-react";
 
 interface OrderItem {
   id: string;
@@ -115,7 +116,7 @@ const Index = () => {
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
                 placeholder="Enter your order number"
-                className="w-full transition-all duration-200 ease-in-out focus:border-[#ea384c] focus:ring-[#ea384c]"
+                className="w-full transition-all duration-200 ease-in-out focus:border-[#db2b19] focus:ring-[#db2b19]"
               />
             </div>
             <div className="space-y-2">
@@ -128,12 +129,12 @@ const Index = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full transition-all duration-200 ease-in-out focus:border-[#ea384c] focus:ring-[#ea384c]"
+                className="w-full transition-all duration-200 ease-in-out focus:border-[#db2b19] focus:ring-[#db2b19]"
               />
             </div>
             <Button
               type="submit"
-              className="w-full bg-[#ea384c] hover:bg-[#ea384c]/90 text-white transition-all duration-200"
+              className="w-full bg-[#db2b19] hover:bg-[#db2b19]/90 text-white transition-all duration-200"
             >
               Continue
             </Button>
@@ -151,8 +152,8 @@ const Index = () => {
                     key={item.id}
                     className={`p-4 border rounded-lg transition-all cursor-pointer ${
                       selectedItem
-                        ? "border-[#ea384c] bg-red-50"
-                        : "border-gray-200 hover:border-[#ea384c]"
+                        ? "border-[#db2b19] bg-red-50"
+                        : "border-gray-200 hover:border-[#db2b19]"
                     }`}
                     onClick={() => handleItemSelect(item.id)}
                   >
@@ -166,7 +167,7 @@ const Index = () => {
                       <div
                         className={`p-2 rounded-full transition-colors ${
                           selectedItem
-                            ? "bg-[#ea384c] text-white"
+                            ? "bg-[#db2b19] text-white"
                             : "bg-gray-200 text-gray-600"
                         }`}
                       >
@@ -178,7 +179,7 @@ const Index = () => {
                         <select
                           value={selectedItem.reason}
                           onChange={(e) => handleReasonChange(item.id, e.target.value)}
-                          className="w-full p-2 border rounded bg-white text-sm focus:border-[#ea384c] focus:ring-[#ea384c]"
+                          className="w-full p-2 border rounded bg-white text-sm focus:border-[#db2b19] focus:ring-[#db2b19]"
                         >
                           {RETURN_REASONS.map((reason) => (
                             <option key={reason} value={reason}>
@@ -194,7 +195,7 @@ const Index = () => {
             </div>
             <Button
               onClick={handleSubmitReturn}
-              className="w-full bg-[#ea384c] hover:bg-[#ea384c]/90 text-white transition-all duration-200 mt-4"
+              className="w-full bg-[#db2b19] hover:bg-[#db2b19]/90 text-white transition-all duration-200 mt-4"
             >
               Submit Return
             </Button>
@@ -232,7 +233,7 @@ const Index = () => {
         className="w-full max-w-md space-y-8 text-center"
       >
         <div className="space-y-2">
-          <h1 className="text-4xl font-semibold tracking-tight text-[#ea384c]">
+          <h1 className="text-4xl font-semibold tracking-tight text-[#db2b19]">
             Easy Returns
           </h1>
           <p className="text-gray-500">
@@ -246,7 +247,7 @@ const Index = () => {
               key={stepNumber}
               className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 stepNumber === step
-                  ? "bg-[#ea384c] text-white"
+                  ? "bg-[#db2b19] text-white"
                   : stepNumber < step
                   ? "bg-green-500 text-white"
                   : "bg-gray-200 text-gray-600"
@@ -261,7 +262,7 @@ const Index = () => {
           ))}
         </div>
 
-        <Card className="p-6 border-[#ea384c] border">
+        <Card className="p-6 border-[#db2b19] border">
           {renderStep()}
         </Card>
 
