@@ -234,7 +234,7 @@ const Index = () => {
       >
         <div className="space-y-2">
           <h1 className="text-4xl font-semibold tracking-tight text-[#db2b19]">
-            Easy Returns
+            Mailship Return Portal
           </h1>
           <p className="text-gray-500">
             Complete your return in 3 simple steps
