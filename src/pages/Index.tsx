@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ interface OrderItem {
   name: string;
   price: number;
   quantity: number;
+  image: string; // Added image property
 }
 
 interface SelectedItem {
@@ -22,9 +24,27 @@ const TEST_ORDER = {
   orderNumber: "1234",
   email: "return@mailship.com",
   items: [
-    { id: "1", name: "Classic White T-Shirt", price: 29.99, quantity: 1 },
-    { id: "2", name: "Blue Denim Jeans", price: 89.99, quantity: 2 },
-    { id: "3", name: "Running Shoes", price: 119.99, quantity: 1 },
+    { 
+      id: "1", 
+      name: "Classic White T-Shirt", 
+      price: 29.99, 
+      quantity: 1,
+      image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format"
+    },
+    { 
+      id: "2", 
+      name: "Blue Denim Jeans", 
+      price: 89.99, 
+      quantity: 2,
+      image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&auto=format"
+    },
+    { 
+      id: "3", 
+      name: "Running Shoes", 
+      price: 119.99, 
+      quantity: 1,
+      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format"
+    },
   ],
 };
 
@@ -164,8 +184,15 @@ const Index = () => {
                     }`}
                     onClick={() => handleItemSelect(item.id)}
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <div>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-grow">
                         <p className="font-medium">{item.name}</p>
                         <p className="text-sm text-gray-500">
                           Quantity: {item.quantity} | ${item.price}
@@ -226,22 +253,39 @@ const Index = () => {
                       alt="DHL Logo" 
                       className="h-8 mb-4"
                     />
-                    <p className="text-sm font-medium">Return Shipping Label</p>
-                    <p className="text-xs text-gray-600">Order: #{orderNumber}</p>
                   </div>
-                  <div className="text-right text-sm">
-                    <p className="font-medium">Return Address:</p>
-                    <p className="text-gray-600">Mailship Returns Center</p>
-                    <p className="text-gray-600">123 Warehouse St.</p>
-                    <p className="text-gray-600">Portland, OR 97201</p>
+                  <div className="text-right">
+                    <div className="text-xs text-gray-600 mb-2">Date: {new Date().toLocaleDateString()}</div>
+                    <div className="font-mono text-xs">AWB: 1234 5678 9012</div>
                   </div>
                 </div>
                 
-                <div className="w-full h-24 bg-gray-100 flex items-center justify-center border border-gray-200 rounded">
-                  <p className="text-gray-400 text-sm">Barcode Placeholder</p>
+                <div className="border-t border-b border-gray-200 py-4 space-y-2">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-left">
+                      <p className="text-xs font-bold">FROM:</p>
+                      <p className="text-xs">{TEST_ORDER.email}</p>
+                      <p className="text-xs">Customer Address</p>
+                      <p className="text-xs">City, State ZIP</p>
+                    </div>
+                    <div className="text-left">
+                      <p className="text-xs font-bold">TO:</p>
+                      <p className="text-xs">Mailship Returns Center</p>
+                      <p className="text-xs">123 Warehouse St.</p>
+                      <p className="text-xs">Portland, OR 97201</p>
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="text-left text-sm space-y-1">
+
+                <div className="bg-gray-900 text-white p-4 text-center">
+                  <p className="text-2xl font-mono">*{orderNumber}*</p>
+                  <div className="mt-2 flex justify-between text-xs">
+                    <span>ORIGIN: {selectedItems.length} ITEM(S)</span>
+                    <span>EXPRESS</span>
+                  </div>
+                </div>
+
+                <div className="text-left text-xs space-y-1">
                   <p className="font-medium">Return Details:</p>
                   <p className="text-gray-600">Tracking #: DHL{Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
                   <p className="text-gray-600">Items: {selectedItems.length}</p>
