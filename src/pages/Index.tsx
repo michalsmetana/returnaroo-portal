@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Download } from "lucide-react";
 
 interface OrderItem {
   id: string;
@@ -98,6 +97,14 @@ const Index = () => {
     toast({
       title: "Return Initiated",
       description: "Your return request has been processed successfully.",
+    });
+  };
+
+  const handleDownloadLabel = () => {
+    // In a real application, this would generate and download a real shipping label
+    toast({
+      title: "Label Downloaded",
+      description: "The shipping label has been downloaded successfully.",
     });
   };
 
@@ -203,18 +210,57 @@ const Index = () => {
         );
       case 3:
         return (
-          <div className="text-center space-y-4">
+          <div className="text-center space-y-6">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
               <Check className="h-6 w-6 text-green-600" />
             </div>
             <h3 className="text-xl font-semibold">Return Submitted Successfully!</h3>
-            <p className="text-gray-600">
-              Your return shipping label has been generated and sent to your email.
-            </p>
+            
+            {/* Shipping Label Preview */}
+            <div className="mt-6 border-2 border-gray-200 rounded-lg p-6 bg-white shadow-sm">
+              <div className="space-y-4">
+                <div className="flex justify-between items-start">
+                  <div className="text-left">
+                    <img 
+                      src="https://www.dhl.com/img/meta/dhl_logo.png" 
+                      alt="DHL Logo" 
+                      className="h-8 mb-4"
+                    />
+                    <p className="text-sm font-medium">Return Shipping Label</p>
+                    <p className="text-xs text-gray-600">Order: #{orderNumber}</p>
+                  </div>
+                  <div className="text-right text-sm">
+                    <p className="font-medium">Return Address:</p>
+                    <p className="text-gray-600">Mailship Returns Center</p>
+                    <p className="text-gray-600">123 Warehouse St.</p>
+                    <p className="text-gray-600">Portland, OR 97201</p>
+                  </div>
+                </div>
+                
+                <div className="w-full h-24 bg-gray-100 flex items-center justify-center border border-gray-200 rounded">
+                  <p className="text-gray-400 text-sm">Barcode Placeholder</p>
+                </div>
+                
+                <div className="text-left text-sm space-y-1">
+                  <p className="font-medium">Return Details:</p>
+                  <p className="text-gray-600">Tracking #: DHL{Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+                  <p className="text-gray-600">Items: {selectedItems.length}</p>
+                </div>
+              </div>
+            </div>
+
+            <Button
+              onClick={handleDownloadLabel}
+              className="w-full bg-[#db2b19] hover:bg-[#db2b19]/90 text-white transition-all duration-200 mt-4"
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Download Shipping Label
+            </Button>
+
             <div className="mt-6 p-4 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600">
                 Please pack your items and attach the shipping label to your package.
-                Drop off your package at any authorized shipping location.
+                Drop off your package at any authorized DHL shipping location.
               </p>
             </div>
           </div>
